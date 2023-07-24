@@ -1,13 +1,12 @@
 from logging import DEBUG, INFO, basicConfig
-from aiogram import Dispatcher, Bot
 
-from everyday_joke.config import load_config
+from aiogram import Bot, Dispatcher
+
 from everyday_joke.bot.handlers.setup import include_routers
 from everyday_joke.bot.middlewares.setup import setup_middlewares
-from everyday_joke.infra.db.main import (
-    create_connection_url,
-    create_session_factory
-)
+from everyday_joke.config import load_config
+from everyday_joke.infra.db.main import (create_connection_url,
+                                         create_session_factory)
 
 
 def configure_logging(debug: bool) -> None:

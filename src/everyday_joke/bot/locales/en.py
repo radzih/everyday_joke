@@ -1,6 +1,5 @@
 START_MESSAGE = (
-    "Hello, hit subscribe button if"
-    " you wanna receive jokes every day"
+    "Hello, hit subscribe button if" " you wanna receive jokes every day"
 )
 
 SUBSCRIBE_BUTTON = "Subscribe"

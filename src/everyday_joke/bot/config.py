@@ -9,5 +9,5 @@ class TgBot:
 
 def load_config():
     return TgBot(
-        token=environ.get('TG_BOT_TOKEN'),
+        token=environ.get("TG_BOT_TOKEN"),
     )

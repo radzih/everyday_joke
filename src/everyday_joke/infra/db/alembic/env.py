@@ -1,13 +1,12 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
+from sqlalchemy import engine_from_config, pool
+
 from everyday_joke.infra.db.config import load_config
 from everyday_joke.infra.db.main import create_connection_url
-from everyday_joke.infra.db.models.base import Base
 from everyday_joke.infra.db.models import *
+from everyday_joke.infra.db.models.base import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

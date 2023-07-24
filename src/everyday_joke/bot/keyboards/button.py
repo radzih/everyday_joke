@@ -5,6 +5,5 @@ from everyday_joke.bot.keyboards import callback
 
 def subscribe(text: str) -> InlineKeyboardButton:
     return InlineKeyboardButton(
-        text=text, 
-        callback_data=callback.Subscribe().pack()
+        text=text, callback_data=callback.Subscribe().pack()
     )

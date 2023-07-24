@@ -1,7 +1,7 @@
 from sqlalchemy import URL
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.asyncio.session import async_sessionmaker
-from sqlalchemy.exc import IntegrityError
 
 from .config import Database
 from .models import User
@@ -30,7 +30,7 @@ def create_session_factory(
 class DBGateway:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
-    
+
     async def commit(self) -> None:
         await self._session.commit()
 
@@ -51,7 +51,7 @@ class DBGateway:
         user.subscribed = True
 
         self._session.add(user)
-    
+
     async def get_user(self, user_id: int) -> UserDTO | None:
         user = await self._session.get(User, user_id)
         if not user:
@@ -60,6 +60,5 @@ class DBGateway:
             id=user.id,
             name=user.name,
             created_date=user.created_date,
-            subscribed=user.subscribed
+            subscribed=user.subscribed,
         )
-

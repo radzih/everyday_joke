@@ -1,10 +1,11 @@
-from datetime import datetime
 from dataclasses import dataclass
+from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
 
 from .base import Base
+
 
 @dataclass
 class UserDTO:
