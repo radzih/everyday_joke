@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: dev-db-everyday_joke
+    restart: "unless-stopped"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+  rabbitmq:
+    image: rabbitmq:3.12-alpine
+    container_name: dev-rabbitmq-everyday_joke
+    restart: "unless-stopped"
+    ports:
+      - "${RABBITMQ_PORT}:5672"
+      
+
+
+    

@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "everyday-joke"
+version = "0.1.0"
+description = ""
+authors = ["Vadim Radzih <iphonevadim2003@gmail.com>"]
+readme = "README.md"
+packages = [{include = "everyday_joke"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiogram = "^3b"
+pyjokes = "^0.6.0"
+sqlalchemy = "^2.0.17"
+alembic = "^1.11.1"
+asyncpg = "^0.27.0"
+psycopg2-binary = "^2.9.6"
+celery = "^5.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
