@@ -10,6 +10,10 @@ define setup_env
     $(eval export)
 endef
 
+.PHONY: reformat
+reformat:
+	poetry run black --line-length=79 src
+	poetry run isort src
 
 .PHONY: dev-bot
 dev-bot:
