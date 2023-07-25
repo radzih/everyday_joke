@@ -45,7 +45,7 @@ async def subscribe(
     if result == SubscribeResult.subscribed:
         text = locales.en.SUBSCRIBE_SUCCESS
     elif result == SubscribeResult.already_subscribed:
-        text = (locales.en.ALREADY_SUBSCRIBED,)
+        text = locales.en.ALREADY_SUBSCRIBED
 
     await call.answer(
         text=text,
