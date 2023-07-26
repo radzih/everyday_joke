@@ -12,4 +12,5 @@ class Joke:
 
 class JokeAdapter:
     async def get_joke(self) -> Joke:
-        pyjokes.get_joke(category=ALL_CATEGORIES)
+        joke_text = pyjokes.get_joke(category=ALL_CATEGORIES)
+        return Joke(joke_text)
