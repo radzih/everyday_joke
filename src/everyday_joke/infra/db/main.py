@@ -1,4 +1,4 @@
-from sqlalchemy import URL
+from sqlalchemy import URL, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.asyncio.session import async_sessionmaker
@@ -62,3 +62,22 @@ class DBGateway:
             created_date=user.created_date,
             subscribed=user.subscribed,
         )
+
+    async def get_users(
+        self, is_subscribed: bool | None = None
+    ) -> list[UserDTO]:
+        query = select(User)
+
+        if is_subscribed is not None:
+            query = query.where(User.subscribed == is_subscribed)
+
+        users = await self._session.execute(query)
+        return [
+            UserDTO(
+                id=user.id,
+                name=user.name,
+                created_date=user.created_date,
+                subscribed=user.subscribed,
+            )
+            for user in users.scalars()
+        ]
