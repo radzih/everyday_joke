@@ -6,6 +6,7 @@ from aiogram.types import CallbackQuery, Message, User
 from everyday_joke.bot import locales
 from everyday_joke.bot.keyboards import callback
 from everyday_joke.infra.db.main import DBGateway
+from everyday_joke.infra.rabbitmq.main import RabbitMQAdapter
 
 router = Router()
 
@@ -15,7 +16,9 @@ class SubscribeResult(Enum):
     already_subscribed = "already_subscribed"
 
 
-async def subscribe_user(user_id: int, db: DBGateway) -> None:
+async def subscribe_user(
+    user_id: int, db: DBGateway, rabbitmq: RabbitMQAdapter
+) -> None:
     user = await db.get_user(user_id=user_id)
 
     if not user:
@@ -29,6 +32,8 @@ async def subscribe_user(user_id: int, db: DBGateway) -> None:
     await db.subscribe_user(user_id=user_id)
     await db.commit()
 
+    await rabbitmq.subscribe_user(user_id=user.id)
+
     return SubscribeResult.subscribed
 
 
@@ -38,9 +43,13 @@ async def subscribe_user(user_id: int, db: DBGateway) -> None:
     F.message.as_("message"),
 )
 async def subscribe(
-    call: CallbackQuery, message: Message, user: User, db: DBGateway
+    call: CallbackQuery,
+    message: Message,
+    user: User,
+    db: DBGateway,
+    rabbitmq: RabbitMQAdapter,
 ) -> None:
-    result = await subscribe_user(user.id, db)
+    result = await subscribe_user(user.id, db, rabbitmq)
 
     if result == SubscribeResult.subscribed:
         text = locales.en.SUBSCRIBE_SUCCESS
