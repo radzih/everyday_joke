@@ -7,6 +7,7 @@ from everyday_joke.bot.middlewares.setup import setup_middlewares
 from everyday_joke.config import load_config
 from everyday_joke.infra.db.main import (create_connection_url,
                                          create_session_factory)
+from everyday_joke.infra.rabbitmq.main import create_amqp_conection
 
 
 def configure_logging(debug: bool) -> None:
@@ -15,6 +16,7 @@ def configure_logging(debug: bool) -> None:
 
 async def main() -> None:
     config = load_config()
+    configure_logging(config.debug)
 
     bot = Bot(config.tg_bot.token)
     dp = Dispatcher()
@@ -22,9 +24,11 @@ async def main() -> None:
     connection_url = create_connection_url(config.db, async_=True)
     session_factory = create_session_factory(connection_url)
 
-    configure_logging(config.debug)
+    amqp_connection = create_amqp_conection(config.rabbitmq)
+    await amqp_connection.connect()
+
     include_routers(dp)
-    setup_middlewares(dp, session_factory)
+    setup_middlewares(dp, session_factory, amqp_connection)
 
     try:
         await dp.start_polling(bot)
