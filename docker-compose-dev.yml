@@ -15,6 +15,9 @@ services:
     image: rabbitmq:3.12-alpine
     container_name: dev-rabbitmq-everyday_joke
     restart: "unless-stopped"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
     ports:
       - "${RABBITMQ_PORT}:5672"
       
