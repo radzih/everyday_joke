@@ -9,7 +9,6 @@ Also you can unsubscribe from receiving jokes.
 - SQLAlchemy
 - aiogram
 - RabbitMQ
-- Celery
 - Poetry
 - Makefile
 
@@ -26,4 +25,7 @@ DB_PORT=<your db port>
 DB_HOST=db
 
 RABBITMQ_PORT=<your rabbitmq port>
+RABBITMQ_HOST=<your rabbitmq host>
+RABBITMQ_USER=<your rabbitmq user>
+RABBITMQ_PASS=<your rabbitmq password>
 ```
