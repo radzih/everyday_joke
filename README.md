@@ -22,7 +22,7 @@ DB_USER=<your db user>
 DB_PASSWORD=<your db password>
 DB_NAME=<your db name>
 DB_PORT=<your db port>
-DB_HOST=db
+DB_HOST=<your db host>
 
 RABBITMQ_PORT=<your rabbitmq port>
 RABBITMQ_HOST=<your rabbitmq host>
