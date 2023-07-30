@@ -1,4 +1,8 @@
 from dataclasses import dataclass
+from logging import DEBUG, ERROR, INFO, basicConfig
+
+from aio_pika.log import logger as aio_pika_logger
+from aiormq.connection import log as aiormq_logger
 
 from everyday_joke.bot.config import TgBot
 from everyday_joke.bot.config import load_config as load_bot_config
@@ -24,3 +28,9 @@ def load_config():
         rabbitmq=load_rabbitmq_config(),
         debug=True,
     )
+
+
+def configure_logging(debug: bool) -> None:
+    basicConfig(level=DEBUG if debug else INFO)
+    aio_pika_logger.setLevel(ERROR)
+    aiormq_logger.setLevel(ERROR)
