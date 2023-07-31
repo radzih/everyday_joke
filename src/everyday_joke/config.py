@@ -9,8 +9,9 @@ from everyday_joke.bot.config import load_config as load_bot_config
 from everyday_joke.infra.db.config import Database
 from everyday_joke.infra.db.config import load_config as load_db_config
 from everyday_joke.infra.rabbitmq.config import RabbitMQ
-from everyday_joke.infra.rabbitmq.config import \
-    load_config as load_rabbitmq_config
+from everyday_joke.infra.rabbitmq.config import (
+    load_config as load_rabbitmq_config,
+)
 
 
 @dataclass

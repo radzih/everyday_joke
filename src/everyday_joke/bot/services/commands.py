@@ -1,6 +1,9 @@
 from aiogram import Bot
-from aiogram.types import (BotCommand, BotCommandScopeChat,
-                           BotCommandScopeDefault)
+from aiogram.types import (
+    BotCommand,
+    BotCommandScopeChat,
+    BotCommandScopeDefault,
+)
 
 start = BotCommand(command="/start", description="Start bot")
 subscribe = BotCommand(
