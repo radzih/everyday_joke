@@ -1011,6 +1011,17 @@ doc = ["mkdocs"]
 test = ["coverage", "pytest", "tox"]
 
 [[package]]
+name = "pytz"
+version = "2023.3"
+description = "World timezone definitions, modern and historical"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pytz-2023.3-py2.py3-none-any.whl", hash = "sha256:a151b3abb88eda1d4e34a9814df37de2a80e301e68ba0fd856fb9b46bfbbbffb"},
+    {file = "pytz-2023.3.tar.gz", hash = "sha256:1d8ce29db189191fb55338ee6d0387d82ab59f3d00eac103412d64e0ebd0c588"},
+]
+
+[[package]]
 name = "sqlalchemy"
 version = "2.0.17"
 description = "Database Abstraction Library"
@@ -1200,4 +1211,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "eb610cb744e668557b9e7e08ca020dee00699f55769d06d0c36d57a9a1047643"
+content-hash = "fe6c959c98ddca1ca57e7a4a886ce7d6dd96097945a493279d8efa3f5f1d60a4"
