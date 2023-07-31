@@ -12,7 +12,7 @@ endef
 
 .PHONY: reformat
 reformat:
-	poetry run black --line-length=79 src
+	poetry run black src
 	poetry run isort src
 
 .PHONY: dev-bot

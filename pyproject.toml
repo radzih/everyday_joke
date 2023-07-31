@@ -6,6 +6,13 @@ authors = ["Vadim Radzih <iphonevadim2003@gmail.com>"]
 readme = "README.md"
 packages = [{include = "everyday_joke"}]
 
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.black]
+line-length = 79
+
 [tool.poetry.dependencies]
 python = "^3.10"
 aiogram = "^3b"
