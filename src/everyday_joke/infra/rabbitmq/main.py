@@ -6,7 +6,6 @@ from aio_pika.connection import make_url
 from everyday_joke.infra.rabbitmq.config import RabbitMQ
 
 SUBSCRIBE_QUEUE = "subscribe"
-SUBSCRIBE_ROUTING_KEY = "subscribe"
 
 logger = getLogger(__name__)
 
@@ -41,4 +40,4 @@ class RabbitMQAdapter:
         )
 
     async def subscribe_user(self, user_id: int) -> None:
-        await self._publish(SUBSCRIBE_ROUTING_KEY, str(user_id))
+        await self._publish(SUBSCRIBE_QUEUE, str(user_id))
