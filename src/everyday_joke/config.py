@@ -12,6 +12,8 @@ from everyday_joke.infra.rabbitmq.config import RabbitMQ
 from everyday_joke.infra.rabbitmq.config import (
     load_config as load_rabbitmq_config,
 )
+from everyday_joke.scheduler.config import Scheduler
+from everyday_joke.scheduler.config import load_config as load_scheduler_config
 
 
 @dataclass
@@ -19,6 +21,7 @@ class Config:
     tg_bot: TgBot
     db: Database
     rabbitmq: RabbitMQ
+    scheduler: Scheduler
     debug: bool = False
 
 
@@ -27,6 +30,7 @@ def load_config():
         tg_bot=load_bot_config(),
         db=load_db_config(),
         rabbitmq=load_rabbitmq_config(),
+        scheduler=load_scheduler_config(),
         debug=True,
     )
 

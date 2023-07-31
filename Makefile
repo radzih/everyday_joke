@@ -39,4 +39,7 @@ dev-env:
 	$(call setup_env, .env.dev)
 	$(filter-out $@,$(MAKECMDGOALS))
 
-
+.PHONY: dev-scheduler
+def-scheduler:
+	$(call setup_env, .env.dev)
+	PYTHONPATH=./src $(python) -m everyday_joke.scheduler
