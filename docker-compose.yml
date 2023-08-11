@@ -1,0 +1,93 @@
+version: "3.8"
+
+services:
+  db-migration:
+    container_name: db-migration-everyday_joke
+    build:
+      context: .
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - db-network-everyday_joke
+    volumes:
+      - ./.env:/app/.env
+      - ./alembic.ini:/app/alembic.ini:ro
+      - ./Makefile:/app/Makefile
+      - ./src/everyday_joke/infra/db/alembic/versions:/app/src/infra/db/alembic/versions:ro
+    command: ["make", "prod-migrate"]
+  db:
+    image: postgres:15-alpine
+    container_name: db-everyday_joke
+    hostname: "${DB_HOST}"
+    restart: "unless-stopped"
+    networks:
+      - db-network-everyday_joke
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    expose:
+      - ${DB_PORT}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  rabbitmq:
+    image: rabbitmq:3.12-alpine
+    container_name: rabbitmq-everyday_joke
+    hostname: ${RABBITMQ_HOST}
+    restart: "unless-stopped"
+    networks:
+      - rabbitmq-network-everyday_joke
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+    expose:
+      - ${RABBITMQ_PORT}
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  bot:
+    container_name: bot-everyday_joke
+    build:
+      context: .
+    restart: unless-stopped
+    volumes:
+      - ./Makefile:/app/Makefile
+      - ./.env:/app/.env
+    depends_on:
+      db:
+        condition: service_healthy
+      db-migration:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - db-network-everyday_joke
+      - rabbitmq-network-everyday_joke
+    command: ["make", "prod-bot"]
+  scheduler:
+    container_name: scheduler-everyday_joke
+    build:
+      context: .
+    restart: unless-stopped
+    volumes:
+      - ./Makefile:/app/Makefile
+      - ./.env:/app/.env
+    depends_on:
+      db:
+        condition: service_healthy
+      db-migration:
+        condition: service_completed_successfully
+    networks:
+      - db-network-everyday_joke
+    command: ["make", "prod-scheduler"]
+      
+networks:
+  db-network-everyday_joke: {}
+  rabbitmq-network-everyday_joke: {}
