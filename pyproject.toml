@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Vadim Radzih <iphonevadim2003@gmail.com>"]
 readme = "README.md"
-packages = [{include = "everyday_joke"}]
+packages = []
 
 [tool.isort]
 profile = "black"
