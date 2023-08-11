@@ -43,3 +43,18 @@ dev-env:
 def-scheduler:
 	$(call setup_env, .env.dev)
 	PYTHONPATH=./src $(python) -m everyday_joke.scheduler
+
+.PHONY: prod-migrate
+prod-migrate:
+	$(call setup_env, .env)
+	PYTHONPATH=./src python -m alembic upgrade head
+
+.PHONY: prod-bot
+prod-bot:
+	$(call setup_env, .env)
+	python -m everyday_joke.bot
+
+.PHONY: prod-scheduler
+prod-scheduler:
+	$(call setup_env, .env)
+	python -m everyday_joke.scheduler
