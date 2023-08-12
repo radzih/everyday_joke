@@ -5,9 +5,9 @@ from aiogram.types import (
     BotCommandScopeDefault,
 )
 
-start = BotCommand(command="/start", description="Start bot")
+start = BotCommand(command="start", description="Start bot")
 subscribe = BotCommand(
-    command="/subscribe", description="Subscribe to daily jokes"
+    command="subscribe", description="Subscribe to daily jokes"
 )
 
 commands = [start, subscribe]
