@@ -5,6 +5,8 @@ from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from everyday_joke.business.subscribe import SubscribeUser
+from everyday_joke.business.user import CreateUser
 from everyday_joke.infra.db.main import DBGateway
 from everyday_joke.infra.rabbitmq.main import RabbitMQAdapter
 
@@ -27,9 +29,12 @@ class InfrastructureMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: Dict[str, Any],
     ) -> Any:
-        data["rabbitmq"] = RabbitMQAdapter(self.ampq_connection)
+        db_session = self.sessionmaker()
+        db = DBGateway(db_session)
+        rabbitmq = RabbitMQAdapter(self.ampq_connection)
 
-        async with self.sessionmaker() as session:
-            data["db"] = DBGateway(session)
+        data["create_user"] = CreateUser(db)
+        data["subscribe_user"] = SubscribeUser(db, rabbitmq)
 
-            await handler(event, data)
+        await handler(event, data)
+        await db_session.close()

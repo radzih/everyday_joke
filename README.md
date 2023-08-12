@@ -39,4 +39,4 @@ SCHEDULER_TIMEZONE=<timezone example: Europe/Kiev>
 
 # Todo
 - [ ] Add tests
-- [ ] Export business logic to separate module
+- [X] Export business logic to separate module
