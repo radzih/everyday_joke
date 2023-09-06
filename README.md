@@ -40,3 +40,4 @@ SCHEDULER_TIMEZONE=<timezone example: Europe/Kiev>
 # Todo
 - [ ] Add tests
 - [X] Export business logic to separate module
+- [ ] Unsubscribe feature
