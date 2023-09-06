@@ -12,8 +12,8 @@ endef
 
 .PHONY: reformat
 reformat:
-	poetry run black src
-	poetry run isort src
+	poetry run black src tests
+	poetry run isort src tests
 
 .PHONY: dev-bot
 dev-bot:
@@ -58,3 +58,17 @@ prod-bot:
 prod-scheduler:
 	$(call setup_env, .env)
 	python -m everyday_joke.scheduler
+
+.PHONY: test-bot
+test-bot:
+	$(call setup_env, .env.test)
+	PYTHONPATH=./src python -m everyday_joke.bot
+
+.PHONY: test-docker
+test-docker:
+	docker compose -f=docker-compose-test.yml --env-file=.env.test up -d
+
+.PHONY: tests
+tests:
+	$(call setup_env, .env.test)
+	PYTHONPATH=./src $(python) -m pytest --disable-warnings 
