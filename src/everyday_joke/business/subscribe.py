@@ -4,6 +4,7 @@ from everyday_joke.infra.db.main import DBGateway
 from everyday_joke.infra.rabbitmq.main import RabbitMQAdapter
 
 from .base import Interactor
+from .exceptions.user import UserNotFound
 
 
 class SubscribeResult(Enum):
@@ -20,7 +21,7 @@ class SubscribeUser(Interactor):
         user = await self.db.get_user(user_id=user_id)
 
         if not user:
-            await self.db.create_user(id=user_id)
+            raise UserNotFound(user_id=user_id, on_process=type(self))
 
         user = await self.db.get_user(user_id=user_id)
 
