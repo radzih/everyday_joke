@@ -1,4 +1,6 @@
 from os import environ
+from asyncio import get_event_loop_policy, AbstractEventLoop
+from typing import Generator
 
 from _pytest.scope import Scope
 from alembic import config as alembic_config
@@ -29,22 +31,19 @@ def session_factory(config: Config) -> async_sessionmaker[AsyncSession]:
 @fixture(scope=Scope.Function)
 async def db_session(
     session_factory: async_sessionmaker[AsyncSession],
-) -> AsyncSession:
-    session = session_factory()
-
-    yield session
-
-    await session.close()
+) -> Generator[AsyncSession, None, None]:
+    async with session_factory() as session:
+        yield session
 
 
 @fixture(scope=Scope.Function, autouse=True)
-async def prepare_db(db_session: AsyncSession) -> None:
+async def prepare_db(db_session: AsyncSession) -> Generator:
     alembic_config.main(argv=["upgrade", "head"])
 
     yield
 
-    schema = "public"
-
+    schema: str = "public"
+    
     await db_session.execute(text(f"DROP SCHEMA IF EXISTS {schema} CASCADE;"))
     await db_session.commit()
     await db_session.execute(text(f"CREATE SCHEMA {schema};"))
@@ -52,7 +51,7 @@ async def prepare_db(db_session: AsyncSession) -> None:
 
 
 @fixture(scope=Scope.Function)
-async def client(config: Config) -> TelegramTestClient:
+async def client(config: Config) -> Generator[TelegramTestClient, None, None]:
     client = TelegramTestClient(
         bot_token=config.tg_bot.token,
         api_id=environ["TDLIB_API_ID"],
@@ -70,3 +69,13 @@ async def client(config: Config) -> TelegramTestClient:
 @fixture(scope=Scope.Function)
 async def db_gateway(db_session: AsyncSession) -> DBGateway:
     return DBGateway(db_session)
+
+
+@fixture(scope=Scope.Session)
+def event_loop() -> Generator[AbstractEventLoop, None, None]:
+    policy = get_event_loop_policy()
+    loop = policy.new_event_loop()
+
+    yield loop
+
+    loop.close()
